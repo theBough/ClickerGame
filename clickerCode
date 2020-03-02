@@ -1,0 +1,10 @@
+Public Class Form1
+    Dim generator As New Random
+    Dim randomNum As Integer
+
+    Private Sub btnPress_Click(sender As Object, e As EventArgs) Handles btnPress.Click
+        randomNum = generator.Next(1, 101)
+        btnPress.Left = generator.Next(playingField.Left, playingField.Right - btnPress.Width)
+        btnPress.Top = generator.Next(playingField.Top, playingField.Bottom - btnPress.Height)
+    End Sub
+End Class
