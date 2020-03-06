@@ -1,10 +1,88 @@
 Public Class Form1
     Dim generator As New Random
     Dim randomNum As Integer
+    Dim distractingButtons(100) As Button
+    Dim buttonNumber As Integer = 0
 
     Private Sub btnPress_Click(sender As Object, e As EventArgs) Handles btnPress.Click
         randomNum = generator.Next(1, 101)
         btnPress.Left = generator.Next(playingField.Left, playingField.Right - btnPress.Width)
         btnPress.Top = generator.Next(playingField.Top, playingField.Bottom - btnPress.Height)
+        If btnPress.Width > 5 Then
+            btnPress.Width -= 5
+        End If
+        If btnPress.Height > 5 Then
+            btnPress.Height -= 5
+        End If
+        chooseColour()
+        createButton()
+        btnPress.BackColor = Color.Green
+        btnPress.BringToFront()
+    End Sub
+    Sub chooseColour()
+        randomNum = generator.Next(1, 20)
+        Select Case randomNum
+            Case 1
+                playingField.BackColor = Color.Khaki
+            Case 2
+                playingField.BackColor = Color.Beige
+            Case 3
+                playingField.BackColor = Color.Aquamarine
+            Case 4
+                playingField.BackColor = Color.LightSalmon
+            Case 5
+                playingField.BackColor = Color.Olive
+            Case 6
+                playingField.BackColor = Color.MediumBlue
+            Case 7
+                playingField.BackColor = Color.Violet
+            Case 8
+                playingField.BackColor = Color.WhiteSmoke
+            Case 9
+                playingField.BackColor = Color.Yellow
+            Case 10
+                playingField.BackColor = Color.Wheat
+            Case 11
+                playingField.BackColor = Color.DarkBlue
+            Case 12
+                playingField.BackColor = Color.SpringGreen
+            Case 13
+                playingField.BackColor = Color.DarkCyan
+            Case 14
+                playingField.BackColor = Color.Black
+            Case 15
+                playingField.BackColor = Color.Magenta
+            Case 16
+                playingField.BackColor = Color.Tomato
+            Case 17
+                playingField.BackColor = Color.Purple
+            Case 18
+                playingField.BackColor = Color.SaddleBrown
+            Case 19
+                playingField.BackColor = Color.PaleGreen
+            Case 20
+                playingField.BackColor = Color.Lime
+        End Select
+    End Sub
+    Private Sub Timer1_Tick_1(sender As Object, e As EventArgs) Handles Timer1.Tick
+        chooseColour()
+    End Sub
+
+    Sub createButton()
+        distractingButtons(buttonNumber) = New Button
+        With distractingButtons(buttonNumber)
+            .Height = 50
+            .Width = 50
+            .BackColor = Color.Red
+            .Top = generator.Next(playingField.Top, playingField.Bottom - 50)
+            .Left = generator.Next(playingField.Left, playingField.Right - 50)
+        End With
+        Me.Controls.Add(distractingButtons(buttonNumber))
+        AddHandler distractingButtons(buttonNumber).MouseEnter, AddressOf buttonHandler
+        distractingButtons(buttonNumber).BringToFront()
+        buttonNumber += 1
+    End Sub
+    Sub buttonHandler(sender As Object, e As EventArgs)
+        MsgBox("Sorry You lost, you are not very good at this game")
     End Sub
 End Class
