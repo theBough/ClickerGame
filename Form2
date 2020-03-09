@@ -1,0 +1,19 @@
+Public Class Form2
+    Dim onOff As Boolean = True
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Form1.Show()
+        Me.Hide()
+    End Sub
+
+    'This Timer will make the words
+    ' ready Player one Flash
+    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
+        If onOff Then
+            onOff = False
+            Label2.Hide()
+        Else
+            onOff = True
+            Label2.Show()
+        End If
+    End Sub
+End Class
