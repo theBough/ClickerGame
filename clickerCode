@@ -1,104 +1,89 @@
 Public Class Form1
     Dim generator As New Random
     Dim randomNum As Integer
-    Dim buttons(100) As Button
-    Dim buttonCount As Integer = 0
+    Dim distractingButtons(100) As Button
+    Dim buttonNumber As Integer = 0
 
     Private Sub btnPress_Click(sender As Object, e As EventArgs) Handles btnPress.Click
-        Dim xSpot As Integer
-        Dim ySpot As Integer
-        createButton()
-        xSpot = generator.Next(playingField.Left, playingField.Right - btnPress.Width)
-        btnPress.Left = xSpot
-
-        ySpot = generator.Next(playingField.Top, playingField.Bottom - btnPress.Height)
-        btnPress.Top = ySpot
-        If btnPress.Height > 5 Then
-            btnPress.Height -= 5
-        End If
+        randomNum = generator.Next(1, 101)
+        btnPress.Left = generator.Next(playingField.Left, playingField.Right - btnPress.Width)
+        btnPress.Top = generator.Next(playingField.Top, playingField.Bottom - btnPress.Height)
         If btnPress.Width > 5 Then
             btnPress.Width -= 5
         End If
+        If btnPress.Height > 5 Then
+            btnPress.Height -= 5
+        End If
+        chooseColour()
+        createButton()
+        btnPress.BackColor = Color.Green
+        btnPress.BringToFront()
     End Sub
-
-    Function selectColour() As Color
-        randomNum = generator.Next(1, 21)
+    Sub chooseColour()
+        randomNum = generator.Next(1, 20)
         Select Case randomNum
             Case 1
-                Return Color.HotPink()
+                playingField.BackColor = Color.Khaki
             Case 2
-                Return Color.GreenYellow()
+                playingField.BackColor = Color.Beige
             Case 3
-                Return Color.Gray()
+                playingField.BackColor = Color.Aquamarine
             Case 4
-                Return Color.Goldenrod()
+                playingField.BackColor = Color.LightSalmon
             Case 5
-                Return Color.Fuchsia()
+                playingField.BackColor = Color.Olive
             Case 6
-                Return Color.Honeydew()
+                playingField.BackColor = Color.MediumBlue
             Case 7
-                Return Color.Lime()
+                playingField.BackColor = Color.Violet
             Case 8
-                Return Color.LightSkyBlue()
+                playingField.BackColor = Color.WhiteSmoke
             Case 9
-                Return Color.LightSlateGray()
+                playingField.BackColor = Color.Yellow
             Case 10
-                Return Color.Olive()
+                playingField.BackColor = Color.Wheat
             Case 11
-                Return Color.NavajoWhite()
+                playingField.BackColor = Color.DarkBlue
             Case 12
-                Return Color.MistyRose()
+                playingField.BackColor = Color.SpringGreen
             Case 13
-                Return Color.MidnightBlue()
+                playingField.BackColor = Color.DarkCyan
             Case 14
-                Return Color.Moccasin()
+                playingField.BackColor = Color.Black
             Case 15
-                Return Color.LightSeaGreen()
+                playingField.BackColor = Color.Magenta
             Case 16
-                Return Color.LawnGreen()
+                playingField.BackColor = Color.Tomato
             Case 17
-                Return Color.Red()
+                playingField.BackColor = Color.Purple
             Case 18
-                Return Color.Maroon()
+                playingField.BackColor = Color.SaddleBrown
             Case 19
-                Return Color.Purple()
+                playingField.BackColor = Color.PaleGreen
             Case 20
-                Return Color.Tomato()
+                playingField.BackColor = Color.Lime
         End Select
-    End Function
-
-    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
-        selectColour()
+    End Sub
+    Private Sub Timer1_Tick_1(sender As Object, e As EventArgs) Handles Timer1.Tick
+        chooseColour()
     End Sub
 
     Sub createButton()
-        buttonCount += 1
-        buttons(buttonCount) = New Button
-        With buttons(buttonCount)
-            .Height = 100
-            .Width = 100
-            .Top = generator.Next(playingField.Top, playingField.Bottom - 100)
-            .Left = generator.Next(playingField.Left, playingField.Right - 100)
-            .BackColor = selectColour()
-            .BringToFront()
+        distractingButtons(buttonNumber) = New Button
+        With distractingButtons(buttonNumber)
+            .Height = 50
+            .Width = 50
+            .BackColor = Color.Red
+            .Top = generator.Next(playingField.Top, playingField.Bottom - 50)
+            .Left = generator.Next(playingField.Left, playingField.Right - 50)
         End With
-        Me.Controls.Add(buttons(buttonCount))
-        buttons(buttonCount).BringToFront()
-
-        'We are going to create a boolean that helps
-        'determine if our newly created button
-        'has a space with no collision.
-
-
-        If buttonCount > 1 Then
-            For i = 1 To buttonCount - 1
-                While buttons(buttonCount).Bounds.IntersectsWith(buttons(i).Bounds)
-                    buttons(buttonCount).Top = generator.Next(playingField.Top, playingField.Bottom - 100)
-                    buttons(buttonCount).Left = generator.Next(playingField.Left, playingField.Right - 100)
-                End While
-            Next
-        End If
-
+        Me.Controls.Add(distractingButtons(buttonNumber))
+        AddHandler distractingButtons(buttonNumber).MouseEnter, AddressOf buttonHandler
+        distractingButtons(buttonNumber).BringToFront()
+        buttonNumber += 1
+    End Sub
+    Sub buttonHandler(sender As Object, e As EventArgs)
+        MsgBox("Sorry You lost, you are not very good at this game")
 
     End Sub
 End Class
