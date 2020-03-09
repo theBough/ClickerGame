@@ -84,5 +84,6 @@ Public Class Form1
     End Sub
     Sub buttonHandler(sender As Object, e As EventArgs)
         MsgBox("Sorry You lost, you are not very good at this game")
+
     End Sub
 End Class
