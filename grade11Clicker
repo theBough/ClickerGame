@@ -21,51 +21,51 @@ Public Class Form1
         End If
     End Sub
 
-    Sub selectColour()
+    Function selectColour() As Color
         randomNum = generator.Next(1, 21)
         Select Case randomNum
             Case 1
-                playingField.BackColor = Color.HotPink
+                Return Color.HotPink()
             Case 2
-                playingField.BackColor = Color.GreenYellow
+                Return Color.GreenYellow()
             Case 3
-                playingField.BackColor = Color.Gray
+                Return Color.Gray()
             Case 4
-                playingField.BackColor = Color.Goldenrod
+                Return Color.Goldenrod()
             Case 5
-                playingField.BackColor = Color.Fuchsia
+                Return Color.Fuchsia()
             Case 6
-                playingField.BackColor = Color.Honeydew
+                Return Color.Honeydew()
             Case 7
-                playingField.BackColor = Color.Lime
+                Return Color.Lime()
             Case 8
-                playingField.BackColor = Color.LightSkyBlue
+                Return Color.LightSkyBlue()
             Case 9
-                playingField.BackColor = Color.LightSlateGray
+                Return Color.LightSlateGray()
             Case 10
-                playingField.BackColor = Color.Olive
+                Return Color.Olive()
             Case 11
-                playingField.BackColor = Color.NavajoWhite
+                Return Color.NavajoWhite()
             Case 12
-                playingField.BackColor = Color.MistyRose
+                Return Color.MistyRose()
             Case 13
-                playingField.BackColor = Color.MidnightBlue
+                Return Color.MidnightBlue()
             Case 14
-                playingField.BackColor = Color.Moccasin
+                Return Color.Moccasin()
             Case 15
-                playingField.BackColor = Color.LightSeaGreen
+                Return Color.LightSeaGreen()
             Case 16
-                playingField.BackColor = Color.LawnGreen
+                Return Color.LawnGreen()
             Case 17
-                playingField.BackColor = Color.Red
+                Return Color.Red()
             Case 18
-                playingField.BackColor = Color.Maroon
+                Return Color.Maroon()
             Case 19
-                playingField.BackColor = Color.Purple
+                Return Color.Purple()
             Case 20
-                playingField.BackColor = Color.Tomato
+                Return Color.Tomato()
         End Select
-    End Sub
+    End Function
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         selectColour()
@@ -79,10 +79,26 @@ Public Class Form1
             .Width = 100
             .Top = generator.Next(playingField.Top, playingField.Bottom - 100)
             .Left = generator.Next(playingField.Left, playingField.Right - 100)
-            .BackColor = Color.Red
+            .BackColor = selectColour()
             .BringToFront()
         End With
         Me.Controls.Add(buttons(buttonCount))
         buttons(buttonCount).BringToFront()
+
+        'We are going to create a boolean that helps
+        'determine if our newly created button
+        'has a space with no collision.
+
+
+        If buttonCount > 1 Then
+            For i = 1 To buttonCount - 1
+                While buttons(buttonCount).Bounds.IntersectsWith(buttons(i).Bounds)
+                    buttons(buttonCount).Top = generator.Next(playingField.Top, playingField.Bottom - 100)
+                    buttons(buttonCount).Left = generator.Next(playingField.Left, playingField.Right - 100)
+                End While
+            Next
+        End If
+
+
     End Sub
 End Class
