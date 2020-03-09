@@ -1,17 +1,88 @@
 Public Class Form1
     Dim generator As New Random
     Dim randomNum As Integer
+    Dim buttons(100) As Button
+    Dim buttonCount As Integer = 0
 
     Private Sub btnPress_Click(sender As Object, e As EventArgs) Handles btnPress.Click
         Dim xSpot As Integer
         Dim ySpot As Integer
-
+        createButton()
         xSpot = generator.Next(playingField.Left, playingField.Right - btnPress.Width)
         btnPress.Left = xSpot
 
-        randomNum = generator.Next(1, 6)
-       
+        ySpot = generator.Next(playingField.Top, playingField.Bottom - btnPress.Height)
+        btnPress.Top = ySpot
+        If btnPress.Height > 5 Then
+            btnPress.Height -= 5
+        End If
+        If btnPress.Width > 5 Then
+            btnPress.Width -= 5
+        End If
+    End Sub
 
+    Sub selectColour()
+        randomNum = generator.Next(1, 21)
+        Select Case randomNum
+            Case 1
+                playingField.BackColor = Color.HotPink
+            Case 2
+                playingField.BackColor = Color.GreenYellow
+            Case 3
+                playingField.BackColor = Color.Gray
+            Case 4
+                playingField.BackColor = Color.Goldenrod
+            Case 5
+                playingField.BackColor = Color.Fuchsia
+            Case 6
+                playingField.BackColor = Color.Honeydew
+            Case 7
+                playingField.BackColor = Color.Lime
+            Case 8
+                playingField.BackColor = Color.LightSkyBlue
+            Case 9
+                playingField.BackColor = Color.LightSlateGray
+            Case 10
+                playingField.BackColor = Color.Olive
+            Case 11
+                playingField.BackColor = Color.NavajoWhite
+            Case 12
+                playingField.BackColor = Color.MistyRose
+            Case 13
+                playingField.BackColor = Color.MidnightBlue
+            Case 14
+                playingField.BackColor = Color.Moccasin
+            Case 15
+                playingField.BackColor = Color.LightSeaGreen
+            Case 16
+                playingField.BackColor = Color.LawnGreen
+            Case 17
+                playingField.BackColor = Color.Red
+            Case 18
+                playingField.BackColor = Color.Maroon
+            Case 19
+                playingField.BackColor = Color.Purple
+            Case 20
+                playingField.BackColor = Color.Tomato
+        End Select
+    End Sub
 
+    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
+        selectColour()
+    End Sub
+
+    Sub createButton()
+        buttonCount += 1
+        buttons(buttonCount) = New Button
+        With buttons(buttonCount)
+            .Height = 100
+            .Width = 100
+            .Top = generator.Next(playingField.Top, playingField.Bottom - 100)
+            .Left = generator.Next(playingField.Left, playingField.Right - 100)
+            .BackColor = Color.Red
+            .BringToFront()
+        End With
+        Me.Controls.Add(buttons(buttonCount))
+        buttons(buttonCount).BringToFront()
     End Sub
 End Class
