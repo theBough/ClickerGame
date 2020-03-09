@@ -89,15 +89,21 @@ Public Class Form1
         'determine if our newly created button
         'has a space with no collision.
 
+        Dim thereIsACollision As Boolean = True
 
-        If buttonCount > 1 Then
-            For i = 1 To buttonCount - 1
-                While buttons(buttonCount).Bounds.IntersectsWith(buttons(i).Bounds)
-                    buttons(buttonCount).Top = generator.Next(playingField.Top, playingField.Bottom - 100)
-                    buttons(buttonCount).Left = generator.Next(playingField.Left, playingField.Right - 100)
-                End While
-            Next
-        End If
+        While thereIsACollision
+            thereIsACollision = False
+            If buttonCount > 1 Then
+                For i = 1 To buttonCount - 1
+                    While buttons(buttonCount).Bounds.IntersectsWith(buttons(i).Bounds)
+                        thereIsACollision = True
+                        buttons(buttonCount).Top = generator.Next(playingField.Top, playingField.Bottom - 100)
+                        buttons(buttonCount).Left = generator.Next(playingField.Left, playingField.Right - 100)
+                    End While
+
+                Next
+            End If
+        End While
 
 
     End Sub
