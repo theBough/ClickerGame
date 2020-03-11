@@ -3,6 +3,18 @@ Public Class Form1
     Dim randomNum As Integer
     Dim buttons(100) As Button
     Dim buttonCount As Integer = 0
+    Dim level As Integer = 0
+    Dim time As Integer = 0
+    Dim clicks As Integer = 0
+
+    Sub levelUp()
+        If clicks > 4 Then
+            level += 1
+            lblLevel.Text = level
+            clicks = 0
+            lblClicks.Text = 0
+        End If
+    End Sub
 
     Private Sub btnPress_Click(sender As Object, e As EventArgs) Handles btnPress.Click
         Dim xSpot As Integer
@@ -19,6 +31,10 @@ Public Class Form1
         If btnPress.Width > 5 Then
             btnPress.Width -= 5
         End If
+        clicks += 1
+        lblClicks.Text = clicks
+        levelUp()
+        playingField.Focus()
     End Sub
 
     Function selectColour() As Color
@@ -84,6 +100,7 @@ Public Class Form1
         End With
         Me.Controls.Add(buttons(buttonCount))
         buttons(buttonCount).BringToFront()
+        AddHandler buttons(buttonCount).MouseEnter, AddressOf buttonHandler
 
         'We are going to create a boolean that helps
         'determine if our newly created button
@@ -107,4 +124,10 @@ Public Class Form1
 
 
     End Sub
+
+    Sub buttonHandler(sender As Object, e As EventArgs)
+        MessageBox.Show("Loser", "You Lost!" & vbCrLf & "Play again?", MessageBoxButtons.YesNo)
+    End Sub
+
+   
 End Class
