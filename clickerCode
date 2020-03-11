@@ -1,111 +1,132 @@
 Public Class Form1
     Dim generator As New Random
     Dim randomNum As Integer
-    Dim distractingButtons(100) As Button
-    Dim buttonNumber As Integer = 0
-    Dim levelNum As Integer = 1
+    Dim buttons(100) As Button
+    Dim buttonCount As Integer = 0
+    Dim level As Integer = 0
+    Dim time As Integer = 0
     Dim clicks As Integer = 0
 
-    Private Sub btnPress_Click(sender As Object, e As EventArgs) Handles btnPress.Click
-        randomNum = generator.Next(1, 101)
-        btnPress.Left = generator.Next(playingField.Left, playingField.Right - btnPress.Width)
-        btnPress.Top = generator.Next(playingField.Top, playingField.Bottom - btnPress.Height)
-        If btnPress.Width > 5 Then
-            btnPress.Width -= 5
+    Sub levelUp()
+        If clicks > 9 Then
+            level += 1
+            lblLevel.Text = level
+            MsgBox("Congrats you Leveled Up")
         End If
+    End Sub
+
+    Private Sub btnPress_Click(sender As Object, e As EventArgs) Handles btnPress.Click
+        Dim xSpot As Integer
+        Dim ySpot As Integer
+        createButton()
+        xSpot = generator.Next(playingField.Left, playingField.Right - btnPress.Width)
+        btnPress.Left = xSpot
+
+        ySpot = generator.Next(playingField.Top, playingField.Bottom - btnPress.Height)
+        btnPress.Top = ySpot
         If btnPress.Height > 5 Then
             btnPress.Height -= 5
         End If
-        chooseColour()
-        createButton()
-        btnPress.BackColor = Color.Green
-        btnPress.BringToFront()
-        playingField.Focus()
+        If btnPress.Width > 5 Then
+            btnPress.Width -= 5
+        End If
         clicks += 1
-        click.Text = clicks
+        lblClicks.Text = clicks
         levelUp()
+        playingField.Focus()
     End Sub
-    Function chooseColour() As Color
-        randomNum = generator.Next(1, 20)
+
+    Function selectColour() As Color
+        randomNum = generator.Next(1, 21)
         Select Case randomNum
             Case 1
-                Return Color.Khaki
+                Return Color.HotPink()
             Case 2
-                Return Color.Beige
+                Return Color.GreenYellow()
             Case 3
-                Return Color.Aquamarine
+                Return Color.Gray()
             Case 4
-                Return Color.LightSalmon
+                Return Color.Goldenrod()
             Case 5
-                Return Color.Olive
+                Return Color.Fuchsia()
             Case 6
-                Return Color.MediumBlue
+                Return Color.Honeydew()
             Case 7
-                Return Color.Violet
+                Return Color.Lime()
             Case 8
-                Return Color.WhiteSmoke
+                Return Color.LightSkyBlue()
             Case 9
-                Return Color.Yellow
+                Return Color.LightSlateGray()
             Case 10
-                Return Color.Wheat
+                Return Color.Olive()
             Case 11
-                Return Color.DarkBlue
+                Return Color.NavajoWhite()
             Case 12
-                Return Color.SpringGreen
+                Return Color.MistyRose()
             Case 13
-                Return Color.DarkCyan
+                Return Color.MidnightBlue()
             Case 14
-                Return Color.Black
+                Return Color.Moccasin()
             Case 15
-                Return Color.Magenta
+                Return Color.LightSeaGreen()
             Case 16
-                Return Color.Tomato
+                Return Color.LawnGreen()
             Case 17
-                Return Color.Purple
+                Return Color.Red()
             Case 18
-                Return Color.SaddleBrown
+                Return Color.Maroon()
             Case 19
-                Return Color.PaleGreen
+                Return Color.Purple()
             Case 20
-                Return Color.Lime
+                Return Color.Tomato()
         End Select
     End Function
-    Private Sub Timer1_Tick_1(sender As Object, e As EventArgs) Handles Timer1.Tick
-        playingField.BackColor = chooseColour()
+
+    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
+        selectColour()
     End Sub
 
     Sub createButton()
-        distractingButtons(buttonNumber) = New Button
-        With distractingButtons(buttonNumber)
-            .Height = 50
-            .Width = 50
-            .BackColor = chooseColour()
-            .Top = generator.Next(playingField.Top, playingField.Bottom - 50)
-            .Left = generator.Next(playingField.Left, playingField.Right - 50)
+        buttonCount += 1
+        buttons(buttonCount) = New Button
+        With buttons(buttonCount)
+            .Height = 100
+            .Width = 100
+            .Top = generator.Next(playingField.Top, playingField.Bottom - 100)
+            .Left = generator.Next(playingField.Left, playingField.Right - 100)
+            .BackColor = selectColour()
+            .BringToFront()
         End With
-        Me.Controls.Add(distractingButtons(buttonNumber))
-        AddHandler distractingButtons(buttonNumber).MouseEnter, AddressOf buttonHandler
-        distractingButtons(buttonNumber).BringToFront()
+        Me.Controls.Add(buttons(buttonCount))
+        buttons(buttonCount).BringToFront()
+        AddHandler buttons(buttonCount).MouseEnter, AddressOf buttonHandler
+
+        'We are going to create a boolean that helps
+        'determine if our newly created button
+        'has a space with no collision.
+
         Dim thereIsACollision As Boolean = True
+
         While thereIsACollision
             thereIsACollision = False
-            If buttonNumber > 0 Then
-                For i = 0 To buttonNumber - 1
-                    While distractingButtons(buttonNumber).Bounds.IntersectsWith(distractingButtons(i).Bounds)
+            If buttonCount > 1 Then
+                For i = 1 To buttonCount - 1
+                    While buttons(buttonCount).Bounds.IntersectsWith(buttons(i).Bounds)
                         thereIsACollision = True
-                        distractingButtons(buttonNumber).Top = generator.Next(playingField.Top, playingField.Bottom - 50)
-                        distractingButtons(buttonNumber).Left = generator.Next(playingField.Left, playingField.Right - 50)
+                        buttons(buttonCount).Top = generator.Next(playingField.Top, playingField.Bottom - 100)
+                        buttons(buttonCount).Left = generator.Next(playingField.Left, playingField.Right - 100)
                     End While
-                Next i
+
+                Next
             End If
         End While
-        buttonNumber += 1
+
+
     End Sub
+
     Sub buttonHandler(sender As Object, e As EventArgs)
-        MsgBox("Sorry You lost, you are not very good at this game")
-
+        MessageBox.Show("Loser", "You Lost!" & vbCrLf & "Play again?", MessageBoxButtons.YesNo)
     End Sub
-    Sub levelUp()
 
-    End Sub
+   
 End Class
